@@ -11,7 +11,10 @@ public class Book {
     }
 
     public String toString(){       // for test purposes
-        return String.format("%d, %s, %s", this.book_id, this.title, this.author);
+        return String.format("%d. %s written by %s\n", this.book_id, this.title, this.author);
+    }
+    public String toStringColumns(){       // for test purposes
+        return String.format("%d. %s written by %s\n", this.book_id, this.title, this.author);
     }
 
     //getters
