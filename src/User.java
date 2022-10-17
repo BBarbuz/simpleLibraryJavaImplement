@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 public class User {
-    private Integer id;
-    private String name;
-    private ArrayList<Integer> bookId = new ArrayList<>();
+    private final Integer id;
+    private final String name;
+    private final ArrayList<Integer> bookId = new ArrayList<>();
 
 
     //constructor

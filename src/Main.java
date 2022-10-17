@@ -3,6 +3,11 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
 
+        boolean loop = true;
+        int choice;
+        int input;
+        Scanner scanner = new Scanner(System.in);
+
         // enter all books into ArrayList
 
         ArrayList<Book> book = new ArrayList<>();
@@ -16,32 +21,38 @@ public class Main {
         User user1 = new User(0, "Julia");
 
 
-        Scanner scanner = new Scanner(System.in);
-        int i = 0;
-        int choice;
+        while (loop) {
 
-        while (i < 5) {
             System.out.println("\n\tMENU\t");
             System.out.println("Choose one option 1 - 4");
-            System.out.println("1. Borrow the book\n2. Return the book to library\n3. Check borrowed books\n4. Check book availability");
+            System.out.println("1. Borrow the book\n2. Return the book to library\n3. Check borrowed books\n4. Exit");
             System.out.print("\n Your choice: ");
 
             choice = scanner.nextInt();
             scanner.nextLine();
-            i++;
+
 
             switch (choice) {
                 case 1:                         // Borrowing books mechanism
                     for (Book a : book)
                         System.out.println(a.getBook_id() + ". " + a.getTitle());
+
                     System.out.print("\nPick book which you would like to borrow by choose the number: ");
 
-                    int x = scanner.nextInt();
+                    input = scanner.nextInt();
                     scanner.nextLine();
-                    user1.addBook(x);
+                    user1.addBook(input);
                     break;
-                case 2:
+                case 2:                         // Books returning mechanism
+                    System.out.println("Pick book which you want to return to library");
 
+                    for (Integer b : user1.getBookId())
+                        System.out.println(book.get(b));
+
+                    System.out.print("Your choice: ");
+                    input = scanner.nextInt();
+                    scanner.nextLine();
+                    user1.removeBook(input);
                     break;
                 case 3:
                     for (Integer b : user1.getBookId()) {
@@ -49,6 +60,7 @@ public class Main {
                     }
                     break;
                 case 4:
+                    loop = false;
                     break;
             }
         }
