@@ -19,10 +19,6 @@ public class User {
         this.bookId.remove(bookId);
     }
 
-//    public toString(){
-//        return String.format("%s", this.getName());
-//    }
-
 
     // getters
     public Integer getId() {
