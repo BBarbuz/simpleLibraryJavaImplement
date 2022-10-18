@@ -75,9 +75,15 @@ public class Main {
                     user1.removeBook(input);
                     break;
                 case 3:
-                    for (Integer b : user1.getBookId()) {
-                        System.out.println(book.get(b));
+                                                // Show borrowed books if empty - show it
+                    if (user1.getBookId().isEmpty())
+                        System.out.printf("\n%s, you don't have any borrowed books right now\n", user1.getName());
+                    else {
+                        for (Integer b : user1.getBookId()) {
+                            System.out.println(book.get(b));
+                        }
                     }
+
                     break;
                 case 4:
                     mainLoop = false;
