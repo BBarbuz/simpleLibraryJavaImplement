@@ -13,8 +13,10 @@ public class Main {
 
         boolean mainLoop = true;
         int choice;
+        String name;
         int input;
         boolean loopCheck;
+        int usersCounter = 0;
         Scanner scanner = new Scanner(System.in);
 
         // enter all books into ArrayList
@@ -26,8 +28,36 @@ public class Main {
 
 
         // create the user instance
+        ArrayList<User> user = new ArrayList<>();
 
-        User user1 = new User(0, "Julia");
+        System.out.println("\n\tSettings MENU\t");
+        System.out.println("Add first library user");
+
+        do
+        {
+            System.out.print("Enter user name: ");
+            name = scanner.nextLine();
+            user.add(new User(usersCounter, name));
+            usersCounter++;
+
+            System.out.println("\nChoose option 1 or 2");
+            System.out.println("1. Add another user\n2. Move to library (You can add more users later)");
+            System.out.print("\tYour choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+        }while(choice == 1);
+
+        System.out.println("\nChoose the user: ");
+        for (User u : user){
+            System.out.println(u.getId() + ".\t" + u.getName());
+        }
+
+        System.out.print("\tYour choice: ");
+        choice = scanner.nextInt();
+        scanner.nextLine();
+
+        User currentUser = user.get(choice);
 
         Tools tool = new Tools();
         Book bookInstance;
@@ -37,7 +67,7 @@ public class Main {
 
             System.out.println("\n\tMENU\t");
             System.out.println("Choose one option 1 - 4");
-            System.out.println("1. Borrow the book\n2. Return the book to library\n3. Check borrowed books\n4. Check availability\n5. Exit");
+            System.out.println("1. Borrow the book\n2. Return the book to library\n3. Check borrowed books\n4. Check availability\n5. Switch user\n6. Exit");
             System.out.print("\n Your choice: ");
 
             choice = scanner.nextInt();
@@ -60,7 +90,7 @@ public class Main {
 
                         loopCheck = false;
 
-                        for (Integer b : user1.getBookId())
+                        for (Integer b : currentUser.getBookId())
                             if (input == b) {
                                 System.out.println("\nYou can't borrow the same book twice!\n");
                                 loopCheck = true;
@@ -71,7 +101,7 @@ public class Main {
                         {
                             bookInstance = book.get(input);
                             bookInstance.setAmount(bookInstance.getAmount() - 1);
-                            user1.addBook(input);
+                            currentUser.addBook(input);
                         }
                     }
                     break;
@@ -80,7 +110,7 @@ public class Main {
                 case 2:                         // Books returning mechanism
                     System.out.println("Pick book which you want to return to library");
 
-                    for (Integer b : user1.getBookId())
+                    for (Integer b : currentUser.getBookId())
                         System.out.println(book.get(b));
 
                     System.out.print("Your choice: ");
@@ -89,16 +119,16 @@ public class Main {
 
                     bookInstance = book.get(input);                 // change amount of books in library after operation and remove book from user account
                     bookInstance.setAmount(bookInstance.getAmount() + 1);
-                    user1.removeBook(input);
+                    currentUser.removeBook(input);
                     break;
 
 
                 case 3:                         // Show borrowed books if empty - show it
 
-                    if (user1.getBookId().isEmpty())
-                        System.out.printf("\n%s, you don't have any borrowed books right now\n", user1.getName());
+                    if (currentUser.getBookId().isEmpty())
+                        System.out.printf("\n%s, you don't have any borrowed books right now\n", currentUser.getName());
                     else {
-                        for (Integer b : user1.getBookId()) {
+                        for (Integer b : currentUser.getBookId()) {
                             System.out.println(book.get(b));
                         }
                     }
@@ -111,8 +141,20 @@ public class Main {
                         System.out.println(a.getBook_id() + ". " + a.getTitle() + "\t\t| book availability: "+ tool.availability(a.getAmount()));
                     break;
 
+                case 5:
+                    System.out.println("\nChoose the user: ");
+                    for (User u : user){
+                        System.out.println(u.getId() + ".\t" + u.getName());
+                    }
 
-                case 5:                         // Exit program
+                    System.out.print("\tYour choice: ");
+                    choice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    currentUser = user.get(choice);
+                    break;
+
+                case 6:                         // Exit program
                     mainLoop = false;
                     break;
             }
