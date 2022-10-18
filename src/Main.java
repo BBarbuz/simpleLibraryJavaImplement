@@ -3,9 +3,10 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
 
-        boolean loop = true;
+        boolean mainLoop = true;
         int choice;
         int input;
+        boolean loopCheck;
         Scanner scanner = new Scanner(System.in);
 
         // enter all books into ArrayList
@@ -21,7 +22,7 @@ public class Main {
         User user1 = new User(0, "Julia");
 
 
-        while (loop) {
+        while (mainLoop) {
 
             System.out.println("\n\tMENU\t");
             System.out.println("Choose one option 1 - 4");
@@ -33,15 +34,34 @@ public class Main {
 
 
             switch (choice) {
-                case 1:                         // Borrowing books mechanism
-                    for (Book a : book)
-                        System.out.println(a.getBook_id() + ". " + a.getTitle());
+                case 1:
+                    loopCheck = true;
+                    while(loopCheck)
+                    {
+                        // Borrowing books mechanism
+                        for (Book a : book)
+                            System.out.println(a.getBook_id() + ". " + a.getTitle());
 
-                    System.out.print("\nPick book which you would like to borrow by choose the number: ");
+                        System.out.print("\nPick book which you would like to borrow by choose the number: ");
 
-                    input = scanner.nextInt();
-                    scanner.nextLine();
-                    user1.addBook(input);
+                        input = scanner.nextInt();
+                        scanner.nextLine();
+
+                        loopCheck = false;
+
+                        for (Integer b : user1.getBookId())
+                            if (input == b) {
+                                System.out.println("\nYou can't borrow the same book twice!\n");
+                                loopCheck = true;
+                                break;
+                            }
+
+                        if(!loopCheck)
+                            user1.addBook(input);
+
+                    }
+
+
                     break;
                 case 2:                         // Books returning mechanism
                     System.out.println("Pick book which you want to return to library");
@@ -60,7 +80,7 @@ public class Main {
                     }
                     break;
                 case 4:
-                    loop = false;
+                    mainLoop = false;
                     break;
             }
         }
