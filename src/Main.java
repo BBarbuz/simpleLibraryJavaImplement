@@ -5,8 +5,6 @@ class Tools {
     public Boolean availability(int a) {
         return a > 0;
     }
-
-    // public void showBorrowedBooks (User user, Book book)         in progress
 }
 public class Main {
     public static void main(String[] args) {
@@ -19,20 +17,20 @@ public class Main {
         int usersCounter = 0;
         Scanner scanner = new Scanner(System.in);
 
-        // enter all books into ArrayList
-
+        // Enter all books into ArrayList
         ArrayList<Book> book = new ArrayList<>();
         book.add(new Book(0, "Zrozumiec programowanie", "Gynveal Coldwind",3));
         book.add(new Book(1, "Programistą być", "Mateusz Rus", 1));
         book.add(new Book(2, "Zostań Ultrasamoukiem", "Scott H.Young",2));
 
 
-        // create the user instance
+        // Create the user ArrayList
         ArrayList<User> user = new ArrayList<>();
 
         System.out.println("\n\tSettings MENU\t");
         System.out.println("Add first library user");
 
+        // Enter users
         do
         {
             System.out.print("Enter user name: ");
@@ -48,17 +46,16 @@ public class Main {
 
         }while(choice == 1);
 
-        System.out.println("\nChoose the user: ");
-        for (User u : user){
+        // Choose user to began using library
+        System.out.println("\nChoose user to began using library: ");
+        for (User u : user)
             System.out.println(u.getId() + ".\t" + u.getName());
-        }
 
         System.out.print("\tYour choice: ");
         choice = scanner.nextInt();
         scanner.nextLine();
 
         User currentUser = user.get(choice);
-
         Tools tool = new Tools();
         Book bookInstance;
 
@@ -75,14 +72,12 @@ public class Main {
 
             switch (choice) {
 
-
-                case 1:             // Borrowing books mechanism
+                // Books borrow
+                case 1:
                     loopCheck = true;
-                    while(loopCheck)
-                    {
+                    while(loopCheck) {
                         for (Book a : book)
-                            System.out.println(a.getBook_id() + ". " + a.getTitle() + "\t\t| book availability: "+ tool.availability(a.getAmount()));
-
+                            System.out.println(a.getBook_id() + ". " + a.getTitle() + "\t\t| book availability: " + tool.availability(a.getAmount()));
                         System.out.print("\nPick book which you would like to borrow by choose the number: ");
 
                         input = scanner.nextInt();
@@ -90,6 +85,7 @@ public class Main {
 
                         loopCheck = false;
 
+                        // check if user do not try borrow the same book twice
                         for (Integer b : currentUser.getBookId())
                             if (input == b) {
                                 System.out.println("\nYou can't borrow the same book twice!\n");
@@ -97,7 +93,16 @@ public class Main {
                                 break;
                             }
 
-                        if(!loopCheck)                              // change amount of books in library after operation and add book to user account
+                        //check the availability of specific book
+                        Book checkBook = book.get(input);
+                        if (!tool.availability(checkBook.getAmount()))
+                        {
+                            System.out.println("\nYou can't borrow this book all copies are on loan\n");
+                            loopCheck = true;
+                        }
+
+                        // change amount of books in library after operation and add book to user account
+                        if(!loopCheck)
                         {
                             bookInstance = book.get(input);
                             bookInstance.setAmount(bookInstance.getAmount() - 1);
@@ -107,7 +112,8 @@ public class Main {
                     break;
 
 
-                case 2:                         // Books returning mechanism
+                // Books return
+                case 2:
                     System.out.println("Pick book which you want to return to library");
 
                     for (Integer b : currentUser.getBookId())
@@ -117,13 +123,15 @@ public class Main {
                     input = scanner.nextInt();
                     scanner.nextLine();
 
-                    bookInstance = book.get(input);                 // change amount of books in library after operation and remove book from user account
+                    // change amount of books in library after operation and remove book from user account
+                    bookInstance = book.get(input);
                     bookInstance.setAmount(bookInstance.getAmount() + 1);
                     currentUser.removeBook(input);
                     break;
 
 
-                case 3:                         // Show borrowed books if empty - show it
+                // Show borrowed books. If empty tell about it.
+                case 3:
 
                     if (currentUser.getBookId().isEmpty())
                         System.out.printf("\n%s, you don't have any borrowed books right now\n", currentUser.getName());
@@ -136,11 +144,13 @@ public class Main {
                     break;
 
 
-                case 4:                         // Show book availability
+                // Show book availability
+                case 4:
                     for (Book a : book)
                         System.out.println(a.getBook_id() + ". " + a.getTitle() + "\t\t| book availability: "+ tool.availability(a.getAmount()));
                     break;
 
+                // Switch between users
                 case 5:
                     System.out.println("\nChoose the user: ");
                     for (User u : user){
@@ -154,7 +164,8 @@ public class Main {
                     currentUser = user.get(choice);
                     break;
 
-                case 6:                         // Exit program
+                // Exit program
+                case 6:
                     mainLoop = false;
                     break;
             }
